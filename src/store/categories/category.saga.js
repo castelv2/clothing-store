@@ -1,11 +1,13 @@
-import { takeLatest, all, call, put } 'redux-saga/effects'
+import { takeLatest, all, call, put } from "redux-saga/effects";
 
-import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
+import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
 
-import { fetchCategoriesSuccess, fetchCategoriesFailed } from './categories.action';
+import {
+  fetchCategoriesSuccess,
+  fetchCategoriesFailure,
+} from "./categories.action";
 
-import { CATEGORIES_ACTION_TYPES } from './categories.types';
-
+import { CATEGORIES_ACTION_TYPES } from "./categories.types";
 
 export function* fetchCategoriesAsync() {
   try {
@@ -14,12 +16,15 @@ export function* fetchCategoriesAsync() {
   } catch (error) {
     yield put(fetchCategoriesFailure(error));
   }
-} 
+}
 
 export function* onFetchCategories() {
-    yield takeLatest(CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START,fetchCategoriesAsync )
+  yield takeLatest(
+    CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START,
+    fetchCategoriesAsync
+  );
 }
 
 export function* categoriesSaga() {
-    yield all([call(onFetchCategories)])
+  yield all([call(onFetchCategories)]);
 }
